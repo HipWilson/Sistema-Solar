@@ -1,0 +1,17 @@
+[package]
+name = "sistema_solar"
+version = "0.1.0"
+edition = "2021"
+description = "Proyecto final de graficos: sistema solar explorable con renderer por software en CPU"
+
+[dependencies]
+# Solo para crear la ventana, leer el teclado y mostrar el framebuffer.
+# TODO(equipo): el enunciado menciona raylib; si el profesor exige raylib-rs, solo hay
+# que reemplazar src/window.rs (todo el resto del programa es independiente de la ventana).
+minifb = "0.25"
+
+[profile.dev]
+opt-level = 3
+
+[profile.release]
+opt-level = 3
