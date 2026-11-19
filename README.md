@@ -1,4 +1,4 @@
-# Sistema solar explorable — Proyecto final de Gráficos por Computadora
+# Sistema solar explorable por medio de una Nave
 
 **Software Renderer en CPU, escrito en Rust.**
 Un pequeño sistema solar con un sol, cinco planetas con identidad propia y una nave que se controla en
@@ -7,15 +7,7 @@ tiempo real. Se puede cruzar el sistema, acercarse a la superficie de cualquier 
 
 ![Sistema completo](docs/img/00_sistema_completo.png)
 
-> **Integrantes y contribuciones** _(completar: una línea por persona con su contribución técnica concreta)_
->
-> | Integrante | Contribución técnica |
-> |---|---|
-> | _Nombre 1_ | _p. ej. rasterizador, z-buffer y recorte_ |
-> | _Nombre 2_ | _p. ej. shaders de planetas y distribución procedural_ |
-> | _Nombre 3_ | _p. ej. nave: física, gravedad, colisión y controles_ |
->
-> **Video del recorrido:** `docs/recorrido.mp4` (vuelo espacial → acercamiento → vuelta alrededor de un planeta → alejamiento).
+> **Video del recorrido:** `docs/recorrido.mp4`. 
 
 ---
 
@@ -41,16 +33,6 @@ Opciones útiles:
 | `cargo run --release -- --save a.png --focus 1 --no-cull --no-lod` | Igual, pero apagando descarte y LOD (para comparar contadores) |
 | `cargo test --release` | Pruebas automáticas (física, colisión, órbitas, semilla) |
 
-### Cómo grabar el video
-* **Opción fácil:** abre el programa con `--demo` y graba la ventana con OBS (o la grabadora de tu sistema).
-* **Sin ventana (con ffmpeg):**
-  ```bash
-  cargo run --release -- --pipe --width 560 --height 350 --fps 30 | \
-    ffmpeg -f rawvideo -pix_fmt rgb24 -s 560x350 -r 30 -i - -c:v libx264 -pix_fmt yuv420p recorrido.mp4
-  ```
-  Dibuja cuadro por cuadro con un tiempo fijo, así que el video sale fluido aunque tu computadora sea lenta.
-
----
 
 ## 2. Controles
 
@@ -118,22 +100,6 @@ objetos y triángulos.
 | **Descarte de objetos fuera de la vista** | 7 | Esfera envolvente contra el frustum + back-face culling + recorte contra el plano cercano; tecla `K` |
 | **Niveles de detalle según la distancia** | 8 | Planetas y objetos de superficie: `Game::lod_index`; tecla `O` |
 
-*(Presentación: se deja a criterio del profesor.)*
-
-### Contadores de descarte y LOD (generados con `--save ... --no-cull --no-lod`)
-
-Triángulos que procesa el renderer según la vista y las optimizaciones activas:
-
-| Vista | Con descarte + LOD | Sin descarte | Sin LOD | Sin ninguno |
-|---|---:|---:|---:|---:|
-| Vista general (inicio) | **2 388** | 2 388 | 164 140 | 164 140 |
-| Cerca de Terra Vitae | **29 480** | 51 880 | 70 520 | 163 672 |
-| Cerca del Motoplaneta | **37 880** | 44 880 | 37 880 | 163 672 |
-
-Con el programa abierto, `K` y `O` cambian estos números en vivo (título de la ventana: `obj dibujados/totales`
-y `tri` rasterizados). En la vista general el LOD reduce el trabajo ~70 veces; el descarte quita los objetos
-detrás o a los lados de la cámara.
-
 ---
 
 ## 5. Los cuerpos y sus shaders
@@ -151,7 +117,7 @@ pixel y devuelven su color. Se calculan en el **espacio del planeta**, así que 
 | ![](docs/img/05_nebulosa_magna.png) **Nebulosa Magna** | `gas_giant.rs` | Bandas líquidas (deformación de dominio doble y desplazamiento distinto por latitud) y tormenta que **curva** las bandas girando las coordenadas. **Animado.** |
 | Nave y objetos | `solid.rs` | Color de cada material del `.mtl`, luz del sol difusa + especular + borde; el fuego de los motores es emisivo y parpadea. |
 
-### Parámetros que se pueden cambiar (para la demostración)
+### Parámetros que se pueden cambiar 
 * **Planetas:** `planet_defs()` en `src/game.rs` — `radius`, `orbit_radius`, `orbit_period` (velocidad orbital), `spin_period`, `tilt`.
 * **Sol:** `SUN_RADIUS` en `src/game.rs`.
 * **Semilla de objetos:** `--seed N` o tecla `Y`. Cantidad y tamaño: `PropDef` de cada planeta.
@@ -187,10 +153,7 @@ baricéntricas y z-buffer compartido → **sombrea solo los píxeles visibles** 
 
 ## 7. Recursos externos y asistencia de IA
 
-* **Asistencia de IA:** se usó un LLM (Claude) como apoyo para estructurar el proyecto, escribir la primera versión del
-  código y generar los modelos iniciales con un script. _(Completar con sus palabras: qué partes entendieron y
-  modificaron, qué cambios propios hicieron. Todos los integrantes deben poder explicar el código.)_
+* **Asistencia de IA:** se usó un Claude como apoyo para el proyecto y partiendo desde el laboratorio 6 de sahdders y básicamente la IA me ayudo a ampliar esta base y crear los nuevos planetas, luego poco a poco les fui dando su toque al igual que a la nave, poco a poco fui dándole el aspecto que me gustara mas, además también la IA me ayudo a estructurar de mejor manera el README para poder darme a entender de mejor manera lo que aprendí y las mejorar que realice personalmente a el proyecto. 
 * **Librerías:** [`minifb`](https://crates.io/crates/minifb) solo para la ventana, el teclado y mostrar el framebuffer.
-  El resto (matemáticas, ruido, rasterizador, escritor de PNG) está escrito en este repositorio.
+  El resto está escrito en este repositorio.
 * **Modelos:** `assets/models/*.obj` fueron generados por `tools/gen_models.py` como punto de partida.
-  _(Indicar aquí cuáles modificaron en Blender y cómo.)_
