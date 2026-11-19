@@ -153,7 +153,12 @@ baricéntricas y z-buffer compartido → **sombrea solo los píxeles visibles** 
 
 ## 7. Recursos externos y asistencia de IA
 
-* **Asistencia de IA:** se usó un Claude como apoyo para el proyecto y partiendo desde el laboratorio 6 de sahdders y básicamente la IA me ayudo a ampliar esta base y crear los nuevos planetas, luego poco a poco les fui dando su toque al igual que a la nave, poco a poco fui dándole el aspecto que me gustara mas, además también la IA me ayudo a estructurar de mejor manera el README para poder darme a entender de mejor manera lo que aprendí y las mejorar que realice personalmente a el proyecto. 
-* **Librerías:** [`minifb`](https://crates.io/crates/minifb) solo para la ventana, el teclado y mostrar el framebuffer.
-  El resto está escrito en este repositorio.
-* **Modelos:** `assets/models/*.obj` fueron generados por `tools/gen_models.py` como punto de partida.
+* **Asistencia de IA:** usé Claude como apoyo y basicamente el proyecto parte de la base del laboratorio 6 y aqui es donde entro la IA ya que me ayudó a ampliar con los nuevos planetas y shaders, a generar los modelos de partida con scripts y a
+  estructurar este README. Después modifiqué personalmente los modelos en Blender y ajusté la escena a mi gusto.
+* **Librerías:** [`minifb`](https://crates.io/crates/minifb) solo para la ventana, el teclado y mostrar el
+  framebuffer. El resto está escrito en este repositorio.
+* **Modelos:** los puntos de partida de `assets/models/*.obj` se generaron con scripts hechos con ayuda de IA
+  (`tools/gen_models.py` y `tools/gen_modelos_v2.py`). Luego los importé en Blender, los modifiqué y los exporté con la nave, el árbol, la moto y la portería ya
+  modificados. Los archivos de trabajo están en `assets/blend/`.
+* **Herramienta de verificación:** `tools/check_obj.py` revisa que un `.obj` exportado tenga el tamaño, el
+  origen y los materiales que el juego espera.
