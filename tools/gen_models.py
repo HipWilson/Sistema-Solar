@@ -172,19 +172,41 @@ def ship():
         "glass": ((0.25, 0.65, 0.95), (0.05, 0.15, 0.25), 0.9),
         "glow": ((0.4, 0.85, 1.0), (0.4, 0.85, 1.0), 0.0),
     })
-    m.part(*frustum((0, 0, -1.2), (0, 0, 0.5), 0.30, 0.22, 10), "hull")
-    m.part(*frustum((0, 0, 0.5), (0, 0, 1.55), 0.22, 0.02, 10), "hull")
-    m.part(*ellipsoid((0, 0.17, 0.15), (0.17, 0.14, 0.5), 12, 8), "glass")
+    # Fuselaje: cuerpo trasero + nariz larga y afilada
+    m.part(*frustum((0, 0, -1.3), (0, 0, 0.4), 0.32, 0.26, 10), "hull")
+    m.part(*frustum((0, 0, 0.4), (0, 0, 1.8), 0.26, 0.03, 10), "hull")
+    # Franja de color en la nariz
+    m.part(*frustum((0, 0, 1.0), (0, 0, 1.2), 0.17, 0.14, 10), "accent")
+    # Cabina de vidrio mas larga
+    m.part(*ellipsoid((0, 0.2, 0.25), (0.2, 0.17, 0.6), 12, 8), "glass")
+    # Espina dorsal oscura
+    m.part(*box((0, 0.32, -0.6), (0.12, 0.10, 1.0)), "dark")
+
     for s in (-1, 1):
-        wing = [(0.18*s, -1.0), (1.55*s, -1.15), (1.55*s, -0.7), (0.18*s, 0.2)]
+        # Alas en flecha (barridas hacia atras)
+        wing = [(0.2*s, -0.3), (1.7*s, -1.25), (1.7*s, -0.9), (0.2*s, 0.5)]
         wing = wing if s > 0 else wing[::-1]
-        m.part(*prism(wing, -0.06, 0.02, lambda a, b, h: (a, h, b)), "hull")
-        stripe = [(1.0*s, -1.08), (1.55*s, -1.15), (1.55*s, -0.9), (1.0*s, -0.88)]
+        m.part(*prism(wing, -0.05, 0.04, lambda a, b, h: (a, h, b)), "hull")
+        # Franja roja sobre el borde trasero del ala
+        stripe = [(1.0*s, -0.807), (1.7*s, -1.25), (1.7*s, -1.0), (1.0*s, -0.55)]
         stripe = stripe if s > 0 else stripe[::-1]
-        m.part(*prism(stripe, 0.02, 0.045, lambda a, b, h: (a, h, b)), "accent")
-        m.part(*frustum((0.34*s, 0, -0.95), (0.34*s, 0, -1.45), 0.15, 0.13, 10), "dark")
-        m.part(*frustum((0.34*s, 0, -1.45), (0.34*s, 0, -1.55), 0.11, 0.08, 10), "glow")
-    fin = [(-1.25, 0.2), (-0.55, 0.2), (-0.8, 0.85), (-1.2, 0.85)]
+        m.part(*prism(stripe, 0.04, 0.065, lambda a, b, h: (a, h, b)), "accent")
+        # Aleta hacia abajo en la punta del ala
+        winglet = [(-0.9, 0.0), (-1.25, 0.0), (-1.3, -0.4), (-1.12, -0.4)]
+        m.part(*prism(winglet, -0.03, 0.03, lambda a, b, h, s=s: (1.7*s + h, b, a)), "accent")
+        # Canards pequenos en la proa
+        canard = [(0.12*s, 0.9), (0.65*s, 0.75), (0.65*s, 0.62), (0.12*s, 0.68)]
+        canard = canard if s > 0 else canard[::-1]
+        m.part(*prism(canard, -0.02, 0.02, lambda a, b, h: (a, h, b)), "dark")
+        # Motores laterales
+        m.part(*frustum((0.55*s, 0, -0.2), (0.55*s, 0, -1.5), 0.16, 0.18, 10), "dark")
+        m.part(*frustum((0.55*s, 0, -1.5), (0.55*s, 0, -1.62), 0.13, 0.09, 10), "glow")
+
+    # Motor central grande
+    m.part(*frustum((0, 0, -1.3), (0, 0, -1.65), 0.30, 0.28, 12), "dark")
+    m.part(*frustum((0, 0, -1.65), (0, 0, -1.78), 0.22, 0.16, 12), "glow")
+    # Aleta dorsal mas alta
+    fin = [(-1.3, 0.2), (-0.5, 0.2), (-0.75, 1.0), (-1.2, 1.0)]
     m.part(*prism(fin, -0.03, 0.03, lambda a, b, h: (h, b, a)), "accent")
     m.write()
 
